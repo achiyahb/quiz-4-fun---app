@@ -20,10 +20,11 @@
 </template>
 
 <script>
-  import firebaseApi from "../middelware/api/RtdbFirebase";
   import util from "../middelware/util";
   import StorageDriver from "../middelware/api/StorageDriver";
   import router from "../router";
+  import RtdbFirebase from "../middelware/api/RtdbFirebase";
+  import firebaseApi from "../middelware/api/RtdbFirebase";
   export default {
     name: 'chapters',
 
@@ -34,22 +35,29 @@
 
     }),
       methods: {
-        randomArray(chaid){
+          randomArray(chaid) {
+              // random the chapter's answers
+              const randomArray = []
+              const array = this.chapters[chaid][`questions`]
+              for (let question in array) {
+                  randomArray.push(question)
+              }
+              util.shuffle(randomArray)
 
-            const randomArray = []
-            const array = this.chapters[chaid][`questions`]
-            for (let question in array) {
-                randomArray.push(question)
-            }
-            util.shuffle(randomArray)
-            StorageDriver.updateAllStorageTable('randomArray', randomArray)
-            router.push({ path: `/chapters/${chaid}/questions/${randomArray[0]}`})
-        }
+              // set random answers to local storage
+              StorageDriver.updateAllStorageTable('randomKeys', randomArray)
+
+              //create an index of attempts
+
+
+              // navigation to the first question
+              router.push({path: `/chapters/${chaid}/questions/${randomArray[0]}`})
+          }
       },
         created() {
           const self = this;
-          const path = firebaseApi.pathFactory(3, self)
-            this.chapters = firebaseApi.getData(path)
+          const path = RtdbFirebase.pathFactory(3, self)
+            this.chapters = RtdbFirebase.getData(path)
                   .then(result => {
                     self.chapters = result
                   })

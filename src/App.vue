@@ -27,17 +27,16 @@
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
-
+    <v-spacer></v-spacer>
     <v-app-bar
             app
             color="cyan"
             dark
     >
-      <v-spacer></v-spacer>
-
-      <v-toolbar-title>Application</v-toolbar-title>
-
       <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+      <v-toolbar-title>{{course.courseName}}</v-toolbar-title>
+
+
     </v-app-bar>
 
     <v-main>
@@ -83,6 +82,8 @@
 </template>
 
 <script>
+  import RtdbFirebase from "./middelware/api/RtdbFirebase";
+
   export default {
     name: 'LayoutsDemosBaselineFlipped',
     props: {
@@ -90,7 +91,20 @@
     },
     data: () => ({
       drawer: null,
+      course: {
+        courseName: ""
+      }
     }),
+
+    created() {
+      this.$vuetify.rtl = true
+      const self = this;
+      const path = RtdbFirebase.pathFactory(2, self)
+      this.course = RtdbFirebase.getData(path)
+              .then(result => {
+                self.course = result
+              })
+    }
   }
 </script>
  <style>

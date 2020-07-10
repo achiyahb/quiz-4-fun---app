@@ -14,7 +14,13 @@ Vue.use(VueRouter)
     path: '/chapters/:chaid/questions/:qid',
     name: 'About',
     component: () => import('../views/Chapter.vue')
-  }
+  },
+    {
+      path: '/chapters/:chaid/score',
+      name: 'score' +
+          '',
+      component: () => import('../views/Score.vue')
+    }
 ]
 
 const router = new VueRouter({

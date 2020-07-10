@@ -8,7 +8,8 @@ export default {
     deleteData,
     updateData,
     getData,
-    pathFactory
+    pathFactory,
+    getAttemptIndex
 }
 
 
@@ -33,15 +34,25 @@ function deleteData(path) {
 }
 
 // need to be generic
-function pathFactory(i, self, id) {
+function pathFactory(i, self, gameMode, attemptIndex) {
     const user = firebaseInstance.firebase.auth().currentUser;
-    const fullPath = ["users", "GRtBTMCkV2aCQpq400Js3S70seL2", "courses", "-MBdJeQdKYUUb_3hBtOa" ,"chapters",self.$route.params.chaid,"questions",self.$route.params.qid]
-    const pathArray = fullPath.splice(0,i+2)
-    if (id){
-        pathArray.push(id)
+    let fullPath =[]
+    let attIndex = attemptIndex ? attemptIndex : 1
+    if (gameMode){
+        fullPath = ["users", "tozV3RfSxTXsA3IMPoT6GTQZ4IZ2", "courses", "-MBoyyuLOcId_2rXYadx" ,"users", user.uid ,"chapters",self.$route.params.chaid,"attempts",attIndex,"questions",self.$route.params.qid]
+    } else{
+        fullPath = ["users", "tozV3RfSxTXsA3IMPoT6GTQZ4IZ2", "courses", "-MBoyyuLOcId_2rXYadx" ,"chapters",self.$route.params.chaid,"questions",self.$route.params.qid]
     }
+    const pathArray = fullPath.splice(0,i+2)
     return pathArray.join('/')
 }
-
+function getAttemptIndex(self) {
+    const path = pathFactory(8, self, 'gameMode')
+    return  getData(path)
+        .then(result => {
+            let attempts = result
+            return attempts.index ? attempts.index : 1
+            })
+}
 
 

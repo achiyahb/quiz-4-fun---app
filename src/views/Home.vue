@@ -1,5 +1,6 @@
 <template>
   <div class="home">
+    <login></login>
     <Chapters/>
 
   </div>
@@ -7,10 +8,12 @@
 
 <script>
 import Chapters from "../components/Chapters";
+import Login from "../components/Login";
 
 export default {
   name: 'Home',
   components: {
+    Login,
     Chapters,
   }
 }
