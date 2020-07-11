@@ -58,6 +58,8 @@
                 let userAnswer = {
                     answerKey: this.$route.params.qid,
                     userChoice: answer,
+                    question: this.question,
+                    correctAnswer: this.answers.correctAnswer
                 }
                 if(answer === this.answers.correctAnswer){
                     console.log('right answer');
