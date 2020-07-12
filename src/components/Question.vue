@@ -76,16 +76,17 @@
 
                 // move to the next page
                 if(!this.randomKeys[0]){
-                    router.push({ path: `/chapters/${this.$route.params.chaid}/score`})
-                    let attempts = {}
+
+                    let attIndex = {}
                     const self = this
-                    attempts.index = RtdbFirebase.getAttemptIndex(self)
+                    attIndex.index = RtdbFirebase.getAttemptIndex(self)
                         .then(result => {
-                            attempts.index = result
-                            attempts.index ++
-                            const path = RtdbFirebase.pathFactory(7, self, 'gameMode')
-                            firebaseApi.writeData(attempts, path);
+                            attIndex.index = result
+                            attIndex.index ++
+                            const path = RtdbFirebase.pathForAtt(self)
+                            firebaseApi.updateData(attIndex, path);
                         })
+                    router.push({ path: `/chapters/${this.$route.params.chaid}/score`})
                 } else {
                     router.push({ path: `/chapters/${this.$route.params.chaid}/questions/${this.randomKeys[0]}`})
                     location.reload();

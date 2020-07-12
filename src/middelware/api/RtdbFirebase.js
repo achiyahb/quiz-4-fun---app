@@ -9,7 +9,8 @@ export default {
     updateData,
     getData,
     pathFactory,
-    getAttemptIndex
+    getAttemptIndex,
+    pathForAtt
 }
 
 
@@ -47,12 +48,18 @@ function pathFactory(i, self, gameMode, attemptIndex) {
     return pathArray.join('/')
 }
 function getAttemptIndex(self) {
-    const path = pathFactory(8, self, 'gameMode')
+    const path = pathForAtt(self)
     return  getData(path)
         .then(result => {
-            let attempts = result
-            return attempts.index ? attempts.index : 1
+            let attIndex = result ? result : {}
+            return attIndex.index ? attIndex.index : 1
             })
+}
+
+function pathForAtt(self) {
+    const user = firebaseInstance.firebase.auth().currentUser;
+    const pathArray = ["users", "tozV3RfSxTXsA3IMPoT6GTQZ4IZ2", "courses", "-MBoyyuLOcId_2rXYadx" ,"users", user.uid ,"chapters",self.$route.params.chaid,"attempts","attIndex"]
+    return pathArray.join('/')
 }
 
 
