@@ -7,8 +7,6 @@
 
             >
             <div
-                    cols="12"
-                    md="2"
                     :class="'rounded-lg'"
                     class="pa-6 text-center light-blue darken-3 white--text"
                     v-text="`${question}`"

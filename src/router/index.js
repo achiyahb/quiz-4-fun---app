@@ -10,6 +10,11 @@ Vue.use(VueRouter)
     name: 'Home',
     component: Home
   },
+    {
+      path: '/courses/:cid',
+      name: 'course',
+      component: () => import('../views/course.vue')
+    },
   {
     path: '/chapters/:chaid/questions/:qid',
     name: 'About',
@@ -17,9 +22,13 @@ Vue.use(VueRouter)
   },
     {
       path: '/chapters/:chaid/score',
-      name: 'score' +
-          '',
+      name: 'score',
       component: () => import('../views/Score.vue')
+    },
+    {
+      path: '/clients/:clid',
+          name: 'client',
+        component: () => import('../views/client.vue')
     }
 ]
 

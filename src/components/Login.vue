@@ -12,9 +12,14 @@
 <script>
     import firebase from 'firebase'
     import firebaseInstance from "../middelware/firebase"
+    import authantication from "../middelware/api/authantication";
     const provider = new firebase.auth.GoogleAuthProvider();
     export default{
         name: "Login",
+        props: ['cid'],
+        // data: () => ({
+        //    cid: cid
+        // }),
         methods: {
             signIn() {
                 const provider = new firebaseInstance.firebase.auth.GoogleAuthProvider()
@@ -24,6 +29,9 @@
                     var token = result.credential.accessToken;
                     // The signed-in user info.
                     var user = result.user;
+                    const client = firebaseInstance.firebase.auth().currentUser;
+                    authantication.createClient(self,client.uid)
+                    self.$router.push(`/clients/${client.uid}`)
                     // ...
                 }).catch(function(error) {
                     // Handle Errors here.

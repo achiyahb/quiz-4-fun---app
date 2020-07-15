@@ -10,8 +10,10 @@ export default {
     getData,
     pathFactory,
     getAttemptIndex,
-    pathForAtt
+    pathForAtt,
+    pathForClient,
 }
+
 
 
 // the good one
@@ -62,4 +64,8 @@ function pathForAtt(self) {
     return pathArray.join('/')
 }
 
+function pathForClient(self, clid){
 
+    const pathArray = ["clients",clid,"quizzes",self.$route.params.cid]
+    return pathArray.join('/')
+}
