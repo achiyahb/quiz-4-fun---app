@@ -48,7 +48,7 @@
                 align="center"
                 justify="center"
         >
-          <router-view></router-view>
+          <router-view/>
           <v-col class="text-center">
             <v-tooltip left>
               <template v-slot:activator="{ on }">
@@ -99,11 +99,18 @@
     created() {
       this.$vuetify.rtl = true
       const self = this;
-      const path = RtdbFirebase.pathFactory(2, self)
-      this.course = RtdbFirebase.getData(path)
+      const autherIdPath = RtdbFirebase.getAutherIdPath(self)
+      let quiz = RtdbFirebase.getData(autherIdPath)
               .then(result => {
-                self.course = result
+                quiz = result
+                const authorId= quiz['authorId']
+                const path = RtdbFirebase.pathFactory(2, self, authorId)
+                this.course = RtdbFirebase.getData(path)
+                        .then(result => {
+                          self.course = result
+                        })
               })
+
     }
   }
 </script>

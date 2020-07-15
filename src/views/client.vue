@@ -1,17 +1,20 @@
 <template>
     <div class="about">
     <h2>החידונים שלך:</h2>
-     <v-container>
+     <v-container v-for="(course,key) in clientCourses">
          <v-row
                  justify="center"
                  align="center"
          >
              <v-col
                      cols="12"
-                     rounded="circle"
+
              >
-                 <v-card-text>
-                     {{clientCourses.courseName}}
+                 <v-card-text
+                         class="grey lighten-2 rounded-circle"
+                         @click="goToCourse(key)"
+                 >
+                     {{course.courseName}}
                  </v-card-text>
              </v-col>
          </v-row>
@@ -22,19 +25,26 @@
 <script>
     import RtdbFirebase from "../middelware/api/RtdbFirebase";
     import Login from "../components/Login";
-    import firebaseInstance from '../middelware/firebase';
+    import router from "../router/index";
     export default {
-        components: {Login},
         data: () => ({
             clientCourses: {
-                courseName: ""
+                courseName: "",
             },
-            thereUser: false
         }),
+        methods:{
+            goToCourse(key){
+                router.push({ path: `/courses/${key}`})
+                location.reload();
+            }
+        },
         created() {
-            self =this
-            const path = RtdbFirebase.getClientPath()
-
+            const self =this
+            const path = RtdbFirebase.pathForClient(self,3)
+            this.clientCourses = RtdbFirebase.getData(path)
+                .then(result => {
+                self.clientCourses = result
+                })
         }
 
 

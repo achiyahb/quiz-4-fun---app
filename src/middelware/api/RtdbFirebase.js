@@ -12,6 +12,7 @@ export default {
     getAttemptIndex,
     pathForAtt,
     pathForClient,
+    getAutherIdPath
 }
 
 
@@ -37,14 +38,14 @@ function deleteData(path) {
 }
 
 // need to be generic
-function pathFactory(i, self, gameMode, attemptIndex) {
-    const user = firebaseInstance.firebase.auth().currentUser;
+function pathFactory(i, self,authorId, gameMode, attemptIndex) {
+    const client = firebaseInstance.firebase.auth().currentUser;
     let fullPath =[]
     let attIndex = attemptIndex ? attemptIndex : 1
     if (gameMode){
-        fullPath = ["users", "tozV3RfSxTXsA3IMPoT6GTQZ4IZ2", "courses", "-MBoyyuLOcId_2rXYadx" ,"users", user.uid ,"chapters",self.$route.params.chaid,"attempts",attIndex,"questions",self.$route.params.qid]
+        fullPath = ["users", authorId, "courses", self.$route.params.cid ,"users", client.uid ,"chapters",self.$route.params.chaid,"attempts",attIndex,"questions",self.$route.params.qid]
     } else{
-        fullPath = ["users", "tozV3RfSxTXsA3IMPoT6GTQZ4IZ2", "courses", "-MBoyyuLOcId_2rXYadx" ,"chapters",self.$route.params.chaid,"questions",self.$route.params.qid]
+        fullPath = ["users", authorId, "courses", self.$route.params.cid ,"chapters",self.$route.params.chaid,"questions",self.$route.params.qid]
     }
     const pathArray = fullPath.splice(0,i+2)
     return pathArray.join('/')
@@ -64,8 +65,16 @@ function pathForAtt(self) {
     return pathArray.join('/')
 }
 
-function pathForClient(self, clid){
+function pathForClient(self,i, clid){
+    if (!clid){
+        clid =self.$route.params.clid
+    }
+    const fullPath = ["clients",clid,"quizzes",self.$route.params.cid]
+    const pathArray = fullPath.splice(0,i)
+    return pathArray.join('/')
+}
 
-    const pathArray = ["clients",clid,"quizzes",self.$route.params.cid]
+function getAutherIdPath(self) {
+    const pathArray = ["quizzes",self.$route.params.cid]
     return pathArray.join('/')
 }

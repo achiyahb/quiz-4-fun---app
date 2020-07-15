@@ -48,13 +48,12 @@
             question: "",
             randomKeys: [],
             deleteTheFirst: [],
-
+            authorId: ""
         }),
         methods: {
             checkTheAnswer(answer){
                 //define user's answer values
                 let userAnswer = {
-                    answerKey: this.$route.params.qid,
                     userChoice: answer,
                     question: this.question,
                     correctAnswer: this.answers.correctAnswer
@@ -69,7 +68,8 @@
 
                 // push user's answer values to data base
                 const self = this
-                const path = firebaseApi.pathFactory(8, self, 'itGameMode')
+                debugger
+                const path = firebaseApi.pathFactory(8, self, this.authorId,'itGameMode')
                 firebaseApi.writeData(userAnswer, path);
 
                 // move to the next page
@@ -84,25 +84,31 @@
                             const path = RtdbFirebase.pathForAtt(self)
                             firebaseApi.updateData(attIndex, path);
                         })
-                    router.push({ path: `/chapters/${this.$route.params.chaid}/score`})
+                    router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/score`})
                 } else {
-                    router.push({ path: `/chapters/${this.$route.params.chaid}/questions/${this.randomKeys[0]}`})
+                    router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/questions/${this.randomKeys[0]}`})
                     location.reload();
                 }
             }
         },
         created() {
             const self = this;
-            const path = firebaseApi.pathFactory(6, self)
-            this.answers = firebaseApi.getData(path)
+            const autherIdPath = RtdbFirebase.getAutherIdPath(self)
+            let quiz = RtdbFirebase.getData(autherIdPath)
                 .then(result => {
-                    self.answers = result
-                    self.question = self.answers.question
-                    delete self.answers.question;
-                    for (let prop in self.answers){
-                        self.answerArr.push(self.answers[prop]);
-                    }
-                    util.shuffle(self.answerArr)
+                    quiz = result
+                    self.authorId = quiz['authorId']
+                    const path = firebaseApi.pathFactory(6, self, self.authorId)
+                    this.answers = firebaseApi.getData(path)
+                        .then(result => {
+                            self.answers = result
+                            self.question = self.answers.question
+                            delete self.answers.question;
+                            for (let prop in self.answers) {
+                                self.answerArr.push(self.answers[prop]);
+                            }
+                            util.shuffle(self.answerArr)
+                        })
                 })
             this.deleteTheFirst = StorageDriver.getFromStorage('randomKeys')
             this.deleteTheFirst.shift();

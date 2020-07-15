@@ -16,13 +16,14 @@
                         <tr v-for="(item,key) in userAnswers" :key="item.name">
                             <td v-for="header in headers">{{item[header.name]}}
                             </td>
-                            <td v-if="item.itIsCorrect">{{scorePerAns}}</td>
+                            <td v-if="item.itIsCorrect">V</td>
+                            <td v-else>X</td>
                         </tr>
                         </tbody>
                     </template>
                 </v-simple-table>
             </v-container>
-        <router-link to="/">
+        <router-link :to="`/courses/${$route.params.cid}`">
             <v-btn class="mr-4">חזור</v-btn>
         </router-link>
     </div>
@@ -32,6 +33,7 @@
     import firebaseApi from "../middelware/api/RtdbFirebase";
     import util from "../middelware/util";
     import StorageDriver from "../middelware/api/StorageDriver";
+    import RtdbFirebase from "../middelware/api/RtdbFirebase";
 
     export default {
 
@@ -51,21 +53,28 @@
         }),
         created() {
                 const self = this;
-                const path = firebaseApi.pathFactory(8, self, 'gameMode')
-                this.userAnswers = firebaseApi.getData(path)
-                    .then(result => {
-                        self.userAnswers = result
-                        let i = 0
-                        let j = 0
-                        for (let prop in self.userAnswers){
-                            i++
-                            if (self.userAnswers[prop].itIsCorrect){
-                               j++
+            const authorIdPath = RtdbFirebase.getAutherIdPath(self)
+            let quiz = RtdbFirebase.getData(authorIdPath)
+                .then(result => {
+                    quiz = result
+                    self.authorId = quiz['authorId']
+                    const path = firebaseApi.pathFactory(8, self, self.authorId,'gameMode')
+                    this.userAnswers = firebaseApi.getData(path)
+                        .then(result => {
+                            self.userAnswers = result
+                            let i = 0
+                            let j = 0
+                            for (let prop in self.userAnswers){
+                                i++
+                                if (self.userAnswers[prop].itIsCorrect){
+                                    j++
+                                }
                             }
-                        }
-                        self.scorePerAns = 100 / i
-                        self.score = (self.scorePerAns * j);
-                    })
+                            self.scorePerAns = 100 / i
+                            self.score = (self.scorePerAns * j);
+                        })
+                })
+
         },
 
 

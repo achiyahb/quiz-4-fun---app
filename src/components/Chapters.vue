@@ -51,16 +51,23 @@
 
 
               // navigation to the first question
-              router.push({path: `/chapters/${chaid}/questions/${randomArray[0]}`})
+              router.push({path: `/courses/${this.$route.params.cid}/chapters/${chaid}/questions/${randomArray[0]}`})
           }
       },
         created() {
           const self = this;
-          const path = RtdbFirebase.pathFactory(3, self)
-            this.chapters = RtdbFirebase.getData(path)
-                  .then(result => {
-                    self.chapters = result
-                  })
+          const autherIdPath = RtdbFirebase.getAutherIdPath(self)
+           let quiz = RtdbFirebase.getData(autherIdPath)
+                .then(result => {
+                    quiz = result
+                    const authorId= quiz['authorId']
+                    const path = RtdbFirebase.pathFactory(3, self, authorId)
+                    this.chapters = RtdbFirebase.getData(path)
+                        .then(result => {
+                            self.chapters = result
+                        })
+                })
+
       }
   }
 </script>
