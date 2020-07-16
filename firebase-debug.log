@@ -1,0 +1,57 @@
+[debug] [2020-07-16T14:43:09.834Z] ----------------------------------------------------------------------
+[debug] [2020-07-16T14:43:09.840Z] Command:       /home/achiyahb/.nvm/versions/node/v12.16.1/bin/node /home/achiyahb/.nvm/versions/node/v12.16.1/bin/firebase deploy --only hosting
+[debug] [2020-07-16T14:43:09.840Z] CLI Version:   8.5.0
+[debug] [2020-07-16T14:43:09.840Z] Platform:      linux
+[debug] [2020-07-16T14:43:09.841Z] Node Version:  v12.16.1
+[debug] [2020-07-16T14:43:09.842Z] Time:          Thu Jul 16 2020 17:43:09 GMT+0300 (Israel Daylight Time)
+[debug] [2020-07-16T14:43:09.843Z] ----------------------------------------------------------------------
+[debug] [2020-07-16T14:43:09.843Z] 
+[warn] ⚠  JSON error trying to load /home/achiyahb/quizard-front/.firebaserc 
+[debug] [2020-07-16T14:43:09.878Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-07-16T14:43:09.879Z] > authorizing via signed-in user
+[debug] [2020-07-16T14:43:09.880Z] [iam] checking project quest-project-cd4a5 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2020-07-16T14:43:09.885Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/quest-project-cd4a5:testIamPermissions  
+ {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2020-07-16T14:43:19.938Z] [iam] error while checking permissions, command may fail: FirebaseError: Server Error. getaddrinfo EAI_AGAIN cloudresourcemanager.googleapis.com
+[debug] [2020-07-16T14:43:19.941Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/quest-project-cd4a5  
+ 
+[debug] [2020-07-16T14:43:22.579Z] Server Error. getaddrinfo EAI_AGAIN firebase.googleapis.com
+[debug] [2020-07-16T14:43:22.626Z] FirebaseError: Server Error. getaddrinfo EAI_AGAIN firebase.googleapis.com
+    at Request._callback (/home/achiyahb/.nvm/versions/node/v12.16.1/lib/node_modules/firebase-tools/lib/api.js:32:31)
+    at self.callback (/home/achiyahb/.nvm/versions/node/v12.16.1/lib/node_modules/firebase-tools/node_modules/request/request.js:185:22)
+    at Request.emit (events.js:311:20)
+    at Request.EventEmitter.emit (domain.js:482:12)
+    at Request.onRequestError (/home/achiyahb/.nvm/versions/node/v12.16.1/lib/node_modules/firebase-tools/node_modules/request/request.js:877:8)
+    at ClientRequest.emit (events.js:323:22)
+    at ClientRequest.EventEmitter.emit (domain.js:482:12)
+    at TLSSocket.socketErrorListener (_http_client.js:426:9)
+    at TLSSocket.emit (events.js:311:20)
+    at TLSSocket.EventEmitter.emit (domain.js:482:12)
+    at emitErrorNT (internal/streams/destroy.js:92:8)
+    at emitErrorAndCloseNT (internal/streams/destroy.js:60:3)
+    at processTicksAndRejections (internal/process/task_queues.js:84:21)
+[error] 
+[error] Error: Failed to get Firebase project quest-project-cd4a5. Please make sure the project exists and your account has permission to access it.
+[debug] [2020-07-16T14:43:38.556Z] ----------------------------------------------------------------------
+[debug] [2020-07-16T14:43:38.569Z] Command:       /home/achiyahb/.nvm/versions/node/v12.16.1/bin/node /home/achiyahb/.nvm/versions/node/v12.16.1/bin/firebase deploy --only hosting
+[debug] [2020-07-16T14:43:38.570Z] CLI Version:   8.5.0
+[debug] [2020-07-16T14:43:38.570Z] Platform:      linux
+[debug] [2020-07-16T14:43:38.571Z] Node Version:  v12.16.1
+[debug] [2020-07-16T14:43:38.571Z] Time:          Thu Jul 16 2020 17:43:38 GMT+0300 (Israel Daylight Time)
+[debug] [2020-07-16T14:43:38.572Z] ----------------------------------------------------------------------
+[debug] [2020-07-16T14:43:38.572Z] 
+[warn] ⚠  JSON error trying to load /home/achiyahb/quizard-front/.firebaserc 
+[debug] [2020-07-16T14:43:38.596Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2020-07-16T14:43:38.598Z] > authorizing via signed-in user
+[debug] [2020-07-16T14:43:38.599Z] [iam] checking project quest-project-cd4a5 for permissions ["firebase.projects.get","firebasehosting.sites.update"]
+[debug] [2020-07-16T14:43:38.607Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/quest-project-cd4a5:testIamPermissions  
+ {"permissions":["firebase.projects.get","firebasehosting.sites.update"]}
+[debug] [2020-07-16T14:43:40.026Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Thu, 16 Jul 2020 14:43:39 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","server-timing":"gfet4t7; dur=565","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[debug] [2020-07-16T14:43:40.029Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/quest-project-cd4a5  
+ 
+[debug] [2020-07-16T14:43:40.659Z] <<< HTTP RESPONSE 200 {"content-type":"application/json; charset=UTF-8","vary":"X-Origin, Referer, Origin,Accept-Encoding","date":"Thu, 16 Jul 2020 14:43:40 GMT","server":"ESF","cache-control":"private","x-xss-protection":"0","x-frame-options":"SAMEORIGIN","x-content-type-options":"nosniff","alt-svc":"h3-29=\":443\"; ma=2592000,h3-27=\":443\"; ma=2592000,h3-25=\":443\"; ma=2592000,h3-T050=\":443\"; ma=2592000,h3-Q050=\":443\"; ma=2592000,h3-Q046=\":443\"; ma=2592000,h3-Q043=\":443\"; ma=2592000,quic=\":443\"; ma=2592000; v=\"46,43\"","accept-ranges":"none","transfer-encoding":"chunked"}
+[info] 
+[info] === Deploying to 'quest-project-cd4a5'...
+[info] 
+[info] i  deploying hosting 
+[info] Running command: npm run build

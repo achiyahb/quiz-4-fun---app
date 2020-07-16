@@ -1,0 +1,12 @@
+{
+  "projects": {
+    "default": "quest-project-cd4a5"
+  }
+}
+"targets":{
+    "quest-project-cd4a5":{
+    "hosting":{
+    "quizzy-fy":["quizzy-fy"]
+    }
+    }
+}

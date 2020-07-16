@@ -1,6 +1,6 @@
 <template>
-    <v-container>
-        <v-row class="text-center">
+    <v-container >
+        <v-row class="text-center" align="start">
             <v-container
                     v-for="(chapter,key) of chapters" class="text-center"
                     :class="`justify-'space-around' mb-6`"
@@ -8,7 +8,7 @@
             >
 
                 <v-responsive @click="randomArray(key)"
-                        class="text-center grey lighten-2 rounded-circle d-inline-flex align-center justify-center ma-3"
+                        class="text-center try grey lighten-2 rounded-circle d-inline-flex align-center justify-center"
                         height="90"
                         width="90"
                 >
@@ -51,7 +51,7 @@
 
 
               // navigation to the first question
-              router.push({path: `/courses/${this.$route.params.cid}/chapters/${chaid}/questions/${randomArray[0]}`})
+              this.$router.push({path: `/courses/${this.$route.params.cid}/chapters/${chaid}/questions/${randomArray[0]}`})
           }
       },
         created() {
@@ -71,3 +71,11 @@
       }
   }
 </script>
+
+<style scoped>
+    .try {
+        padding-top: 0;
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+</style>

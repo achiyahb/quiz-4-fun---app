@@ -10,7 +10,7 @@ import Chapters from "../components/Chapters";
 import Login from "../components/Login";
 
 export default {
-  name: 'Home',
+  name: 'course',
   components: {
     Login,
     Chapters,

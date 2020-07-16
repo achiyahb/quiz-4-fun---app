@@ -1,0 +1,21 @@
+{
+  /* Visit https://firebase.google.com/docs/database/security to learn more about security rules. */
+  "rules": {
+    ".read": false,
+    ".write": false,
+    "users" : {
+      "$uid" : {
+        ".read": "auth.uid == $uid",
+        "courses": {
+          "$cid" : {
+            ".write": "auth.uid == $uid",
+            ".validate" : "newData.child('courseName').exists()",
+            "chapters" : {
+              ".validate" : "newData.child('chapterName').exists()",
+            }
+          }
+        }
+      }
+    }
+  }
+}

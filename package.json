@@ -9,12 +9,13 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.8.2",
     "core-js": "3.6.5",
+    "firebase": "7.15.5",
     "roboto-fontface": "*",
+    "v-offline": "^1.2.1",
     "vue": "2.6.11",
     "vue-router": "3.2.0",
-    "vuetify": "2.3.4",
-    "firebase": "7.15.5",
-    "vuefire": "2.2.3"
+    "vuefire": "2.2.3",
+    "vuetify": "2.3.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.4.0",

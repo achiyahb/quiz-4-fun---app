@@ -7,11 +7,11 @@
                  align="center"
          >
              <v-col
-                     cols="12"
+                     cols="8"
 
              >
                  <v-card-text
-                         class="grey lighten-2 rounded-circle"
+                         class="grey lighten-2 rounded-pill"
                          @click="goToCourse(key)"
                  >
                      {{course.courseName}}
@@ -27,6 +27,7 @@
     import Login from "../components/Login";
     import router from "../router/index";
     export default {
+        name: 'Home',
         data: () => ({
             clientCourses: {
                 courseName: "",
@@ -35,7 +36,6 @@
         methods:{
             goToCourse(key){
                 router.push({ path: `/courses/${key}`})
-                location.reload();
             }
         },
         created() {

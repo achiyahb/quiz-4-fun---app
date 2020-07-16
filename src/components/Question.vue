@@ -1,14 +1,14 @@
 <template>
     <v-container>
-        <v-row justify="center">
+        <v-row justify="center" align="start">
             <v-col
                     cols="12"
-                    md="2"
+                    md="12"
 
             >
             <div
                     :class="'rounded-lg'"
-                    class="pa-6 text-center light-blue darken-3 white--text"
+                    class="pa-5 text-center light-blue darken-3 white--text"
                     v-text="`${question}`"
             ></div>
             </v-col>
@@ -18,11 +18,13 @@
                     v-for="answer of answerArr"
                     :key="answer"
                     cols="12"
-                    md="2"
+                    md="12"
+                    xs="11"
+                    sm="5"
             >
                     <div
                             :class="'rounded-lg'"
-                            class="pa-6 text-center blue lighten-2 black--text"
+                            class="pa-3 text-center blue lighten-2 black--text"
                             v-text="`${answer}`"
                             @click="checkTheAnswer(answer)"
                     ></div>
@@ -84,10 +86,10 @@
                             const path = RtdbFirebase.pathForAtt(self)
                             firebaseApi.updateData(attIndex, path);
                         })
-                    router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/score`})
+                    this.$router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/score`})
                 } else {
-                    router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/questions/${this.randomKeys[0]}`})
-                    location.reload();
+                    this.$router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/questions/${this.randomKeys[0]}`})
+                    location.reload()
                 }
             }
         },
