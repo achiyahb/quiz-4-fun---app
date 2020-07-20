@@ -7,17 +7,17 @@ import firebaseInstance from '../middelware/firebase';
 Vue.use(VueRouter)
 
 const routes = [
-  {path: '/', name: 'Home', component: Home},
+  {path: '/', name: 'Home',meta:{authNotRequired:false}, component: Home},
 
-  {path: '/login', name: 'login', component: () => import('../views/LoginScreen.vue')},
+  {path: '/login', name: 'login',meta:{authNotRequired:true}, component: () => import('../views/LoginScreen.vue')},
 
-  {path: '/courses/:cid', name: 'course',meta:{requiresAuth:false}, component: () => import('../views/course.vue')},
+  {path: '/courses/:cid', name: 'course',meta:{authNotRequired:false}, component: () => import('../views/course.vue')},
 
-  {path: '/courseNew/:cid', name: 'courseNew',meta:{requiresAuth:false}, component: () => import('../views/CourseNew.vue')},
+  {path: '/courseNew/:cid', name: 'courseNew',meta:{authNotRequired:false}, component: () => import('../views/CourseNew.vue')},
 
-  {path: '/courses/:cid/chapters/:chaid/questions/:qid', name: 'About',meta:{requiresAuth:false}, component: () => import('../views/Chapter.vue')},
+  {path: '/courses/:cid/chapters/:chaid/questions/:qid', name: 'About',meta: {authNotRequired: false}, component: () => import('../views/Chapter.vue')},
 
-  {path: '/courses/:cid/chapters/:chaid/score', name: 'score',meta:{requiresAuth:false}, component: () => import('../views/Score.vue')},
+  {path: '/courses/:cid/chapters/:chaid/score', name: 'score',meta: {authNotRequired: false}, component: () => import('../views/Score.vue')},
 
 ]
 
@@ -32,5 +32,14 @@ const router = new VueRouter({
 //   else if (!requiredAuth && currentUser) next ('home');
 //   else next();
 // });
+// eslint-disable-next-line consistent-return
+router.beforeEach((to, from, next) => {
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (user && to.meta.authNotRequired || !user && !to.meta.authNotRequired) {
+    const path = !user ? '/login' : '/home';
+    return next(path)
+  }
+  next()
+})
 
 export default router
