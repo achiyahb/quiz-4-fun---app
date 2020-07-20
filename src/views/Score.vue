@@ -24,7 +24,11 @@
                 </v-simple-table>
             </v-container>
         <router-link :to="`/courses/${$route.params.cid}`">
-            <v-btn class="mr-4">חזור</v-btn>
+            <v-btn @click="deleteData()" class="mr-4">בחזרה לחידון</v-btn>
+        </router-link>
+        <v-spacer></v-spacer>
+        <router-link :to="`/`">
+            <v-btn @click="deleteData()" class="mr-4">בחזרה לאזור האישי</v-btn>
         </router-link>
     </div>
 </template>
@@ -34,6 +38,7 @@
     import util from "../middelware/util";
     import StorageDriver from "../middelware/api/StorageDriver";
     import RtdbFirebase from "../middelware/api/RtdbFirebase";
+    import firebaseInstance from "../middelware/firebase";
 
     export default {
 
@@ -49,8 +54,16 @@
                 correctAnswer: 0,
             },
             scorePerAns: undefined,
-            score: undefined
+            score: undefined,
+            clientId: ""
         }),
+        methods:{
+          deleteData() {
+              self=this
+              const path = firebaseApi.pathFactory(7, self, self.authorId,'gameMode')
+              RtdbFirebase.deleteData(path)
+              }
+        },
         created() {
                 const self = this;
             const authorIdPath = RtdbFirebase.getAutherIdPath(self)
@@ -74,6 +87,8 @@
                             self.score = (self.scorePerAns * j);
                         })
                 })
+            const user = firebaseInstance.firebase.auth().currentUser;
+            this.clientId=user.uid;
 
         },
 

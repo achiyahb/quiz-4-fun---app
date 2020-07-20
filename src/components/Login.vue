@@ -12,7 +12,9 @@
 <script>
     import firebase from 'firebase'
     import firebaseInstance from "../middelware/firebase"
-    const provider = new firebase.auth.GoogleAuthProvider();
+    import router from "../router/index";
+
+
     export default{
         name: "Login",
         methods: {
@@ -25,6 +27,7 @@
                     // The signed-in user info.
                     var user = result.user;
                     // ...
+                    router.go(0)
                 }).catch(function(error) {
                     // Handle Errors here.
                     var errorCode = error.code;

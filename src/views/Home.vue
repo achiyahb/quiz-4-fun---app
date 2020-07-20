@@ -10,17 +10,31 @@
                      cols="8"
 
              >
-                 <v-card-text
-                         class="grey lighten-2 rounded-pill"
-                         @click="goToCourse(key)"
-                 >
-                     {{course.courseName}}
-                 </v-card-text>
+                 <a style="...">
+                 <v-card>
+                     <v-hover>
+
+                         <v-card-text
+                                 @click="goToCourse(key)"
+                                 slot-scope="{hover}"
+                                 :class="`${hover ? 'grey lighten-1 text--primary': 'grey lighten-2 text--primary'}`"
+                         >
+                             {{course.courseName}}
+                         </v-card-text>
+
+                     </v-hover>
+                 </v-card>
+                 </a>
+
+
              </v-col>
+
          </v-row>
      </v-container>
+        
     </div>
 </template>
+<!--{{goTo?'נהדר, נרשמת לחידון, המערכת טוענת נתונים ובעוד מספר שניות תוכל לגשת אליו דרך האזור האישי שלך!!':'הרשם לחידון'}}-->
 
 <script>
     import RtdbFirebase from "../middelware/api/RtdbFirebase";
@@ -30,7 +44,7 @@
         name: 'Home',
         data: () => ({
             clientCourses: {
-                courseName: "",
+                courseName: null,
             },
         }),
         methods:{

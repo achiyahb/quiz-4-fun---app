@@ -10,7 +10,7 @@ firebase.initializeApp({
     projectId: "quest-project-cd4a5",
     storageBucket: "quest-project-cd4a5.appspot.com",
     messagingSenderId: "81966034553",
-    appId: "1:81966034553:web:2e1119ed8450fc20b5eea8"
+    appId: "1:81966034553:web:61b7ba6d510f94f7b5eea8"
 });
 
 export default {

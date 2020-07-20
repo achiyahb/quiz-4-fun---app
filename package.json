@@ -9,7 +9,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "5.8.2",
     "core-js": "3.6.5",
-    "firebase": "7.15.5",
+    "firebase": "7.16.1",
     "roboto-fontface": "*",
     "v-offline": "^1.2.1",
     "vue": "2.6.11",

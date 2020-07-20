@@ -1,13 +1,13 @@
 {
   "database": {
-
     "rules": "database.rules.json"
   },
   "storage": {
     "rules": "storage.rules"
   },
   "hosting": {
-    "target": "quizzy-fy",
+    "site": "quizz4fun",
+    "target": "quizz4fun",
     "public": "dist",
     "ignore": [
       "firebase.json",

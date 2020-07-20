@@ -67,7 +67,8 @@ function pathForAtt(self) {
 
 function pathForClient(self,i, clid){
     if (!clid){
-        clid =self.$route.params.clid
+        const client = firebaseInstance.firebase.auth().currentUser;
+        clid =client.uid
     }
     const fullPath = ["clients",clid,"quizzes",self.$route.params.cid]
     const pathArray = fullPath.splice(0,i)

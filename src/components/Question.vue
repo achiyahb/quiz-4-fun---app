@@ -1,14 +1,22 @@
 <template>
-    <v-container>
+    <div>
+<v-row>
+    <v-spacer></v-spacer>
+    <a style="cursor: pointer">
+    <router-link :to="`/courses/${$route.params.cid}`">
+        <v-icon  class="fas fa-times ml-8 mt-2"></v-icon>
+    </router-link>
+    </a>
+
+</v-row>
+            <v-container>
         <v-row justify="center" align="start">
             <v-col
                     cols="12"
                     md="12"
-
             >
             <div
-                    :class="'rounded-lg'"
-                    class="pa-5 text-center light-blue darken-3 white--text"
+                    class="pa-5 text-center rounded-lg light-blue darken-3 white--text"
                     v-text="`${question}`"
             ></div>
             </v-col>
@@ -22,15 +30,18 @@
                     xs="11"
                     sm="5"
             >
+                <a style="cursor: pointer">
                     <div
                             :class="'rounded-lg'"
                             class="pa-3 text-center blue lighten-2 black--text"
                             v-text="`${answer}`"
                             @click="checkTheAnswer(answer)"
                     ></div>
+                </a>
             </v-col>
         </v-row>
     </v-container>
+    </div>
 </template>
 
 <script>
@@ -91,7 +102,12 @@
                     this.$router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/questions/${this.randomKeys[0]}`})
                     location.reload()
                 }
-            }
+            },
+                deleteData() {
+                    self=this
+                    const path = firebaseApi.pathFactory(7, self, self.authorId,'gameMode')
+                    RtdbFirebase.deleteData(path)
+                }
         },
         created() {
             const self = this;

@@ -5,9 +5,9 @@
             color="cyan"
             dark
     >
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
       <v-toolbar-title>{{course.courseName}}</v-toolbar-title>
-
+<v-spacer></v-spacer>
+      <logout></logout>
 
     </v-app-bar>
 
@@ -50,9 +50,11 @@
 
 <script>
   import RtdbFirebase from "./middelware/api/RtdbFirebase";
+  import Logout from "./components/logOut";
 
   export default {
     name: 'LayoutsDemosBaselineFlipped',
+    components: {Logout},
     props: {
       source: String,
     },
@@ -65,18 +67,18 @@
 
     created() {
       this.$vuetify.rtl = true
-      const self = this;
-      const autherIdPath = RtdbFirebase.getAutherIdPath(self)
-      let quiz = RtdbFirebase.getData(autherIdPath)
-              .then(result => {
-                quiz = result
-                const authorId= quiz['authorId']
-                const path = RtdbFirebase.pathFactory(2, self, authorId)
-                this.course = RtdbFirebase.getData(path)
-                        .then(result => {
-                          self.course = result
-                        })
-              })
+      // const self = this;
+      // const autherIdPath = RtdbFirebase.getAutherIdPath(self)
+      // let quiz = RtdbFirebase.getData(autherIdPath)
+      //         .then(result => {
+      //           quiz = result
+      //           const authorId= quiz['authorId']
+      //           const path = RtdbFirebase.pathFactory(2, self, authorId)
+      //           this.course = RtdbFirebase.getData(path)
+      //                   .then(result => {
+      //                     self.course = result
+      //                   })
+      //         })
 
     }
   }

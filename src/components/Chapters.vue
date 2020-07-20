@@ -6,7 +6,7 @@
                     :class="`justify-'space-around' mb-6`"
                     color="grey lighten-2"
             >
-
+                <a style="cursor: pointer">
                 <v-responsive @click="randomArray(key)"
                         class="text-center try grey lighten-2 rounded-circle d-inline-flex align-center justify-center"
                         height="90"
@@ -14,6 +14,7 @@
                 >
                         {{chapter.chapterName}}
                 </v-responsive>
+                </a>
             </v-container>
         </v-row>
     </v-container>

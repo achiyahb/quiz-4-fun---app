@@ -12,3 +12,23 @@ new Vue({
   vuetify,
   render: h => h(App)
 }).$mount('#app')
+//
+// firebaseInstance.firebase.auth().onAuthStateChanged((user) =>{
+//   if(user){
+//     window.user = user;
+//
+//     localStorage.setItem('uid', user.uid);
+//     new Vue({
+//       router,
+//       vuetify,
+//       render: h => h(App)
+//     }).$mount('#app')
+//   }
+//   else {
+//     new Vue({
+//       router,
+//       vuetify,
+//       render: h => h(App)
+//     }).$mount('#app')
+//   }
+// })
