@@ -20,32 +20,30 @@ exports.madeRootOfCourses = functions.database.ref('/users/{uId}/courses/{cid}')
     });
 
 
-// exports.addAuthorToClient = functions.database.ref('/clients/{cluid}/quizzes/{quid}')
+exports.addAuthorToClient = functions.database.ref('/clients/{cluid}/quizzes/{quid}')
+    .onCreate((snapshot, context) => {
+        let quid = context.params.quid
+        let quizName = snapshot.ref.root.child(`quizzes/${quid}/quizDetails/quizName`).once('value')
+            .then(dataSnapshot => {
+                quizName = dataSnapshot.val();
+                return snapshot.ref.child(`quizName`).set(quizName)
+            })
+    });
+
+// exports.addCourseNameToClient = functions.database.ref('/clients/{cluid}/quizzes/{quid}')
 //     .onCreate((snapshot, context) => {
 //         let quid = context.params.quid
 //         let authorid = snapshot.ref.root.child(`quizzes/${quid}/authorId`).once('value')
 //             .then(dataSnapshot => {
 //                 authorid = dataSnapshot.val();
-//                 return snapshot.ref.child(`authorId`).set(authorid)
-//
+//                 let courseName = snapshot.ref.root.child(`users/${authorid}/courses/${quid}/courseName`).once('value')
+//                     .then(dataSnapshot => {
+//                         courseName = dataSnapshot.val();
+//                         return snapshot.ref.child(`courseName`).set(courseName)
+//                     })
 //             })
 //         console.log(authorid)
 //     });
-
-exports.addCourseNameToClient = functions.database.ref('/clients/{cluid}/quizzes/{quid}')
-    .onCreate((snapshot, context) => {
-        let quid = context.params.quid
-        let authorid = snapshot.ref.root.child(`quizzes/${quid}/authorId`).once('value')
-            .then(dataSnapshot => {
-                authorid = dataSnapshot.val();
-                let courseName = snapshot.ref.root.child(`users/${authorid}/courses/${quid}/courseName`).once('value')
-                    .then(dataSnapshot => {
-                        courseName = dataSnapshot.val();
-                        return snapshot.ref.child(`courseName`).set(courseName)
-                    })
-            })
-        console.log(authorid)
-    });
 
 // exports.addCourseNameToClient = functions.database.ref('/clients/{cluid}/quizzes/{quid}/authorId')
 //     .onCreate((snapshot, context) => {

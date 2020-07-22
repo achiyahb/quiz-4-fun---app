@@ -12,7 +12,8 @@ export default {
     getAttemptIndex,
     pathForAtt,
     pathForClient,
-    getAutherIdPath
+    getAutherIdPath,
+    pathForQuiz
 }
 
 
@@ -26,7 +27,7 @@ function getData(path) {
 }
 
 function updateData(data, path){
-    db.ref(path).set(data);
+   db.ref(path).set(data)
 }
 
 function writeData(data, path) {
@@ -38,14 +39,17 @@ function deleteData(path) {
 }
 
 // need to be generic
-function pathFactory(i, self,authorId, gameMode, attemptIndex) {
+function pathFactory(i, self,authorId, gameMode, attemptIndex,chaid) {
     const client = firebaseInstance.firebase.auth().currentUser;
     let fullPath =[]
     let attIndex = attemptIndex ? attemptIndex : 1
+    if (!chaid && i>3 && !gameMode){
+        chaid = self.$route.params.chaid
+    }
     if (gameMode){
-        fullPath = ["users", authorId, "courses", self.$route.params.cid ,"users", client.uid ,"chapters",self.$route.params.chaid,"attempts",attIndex,"questions",self.$route.params.qid]
+        fullPath = ["users", authorId, "courses", self.$route.params.cid ,"users", client.uid ,"chapters",self.$route.params.chaid,"attempts",attIndex,self.$route.params.qid]
     } else{
-        fullPath = ["users", authorId, "courses", self.$route.params.cid ,"chapters",self.$route.params.chaid,"questions",self.$route.params.qid]
+        fullPath = ["users", authorId, "courses", self.$route.params.cid ,"chapters",chaid,"questions",self.$route.params.qid]
     }
     const pathArray = fullPath.splice(0,i+2)
     return pathArray.join('/')
@@ -77,5 +81,10 @@ function pathForClient(self,i, clid){
 
 function getAutherIdPath(self) {
     const pathArray = ["quizzes",self.$route.params.cid]
+    return pathArray.join('/')
+}
+
+function pathForQuiz(self) {
+    const pathArray = ["quizzes",self.$route.params.cid,"quizDetails"]
     return pathArray.join('/')
 }

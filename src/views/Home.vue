@@ -15,11 +15,13 @@
                      <v-hover>
 
                          <v-card-text
+
+
                                  @click="goToCourse(key)"
                                  slot-scope="{hover}"
-                                 :class="`${hover ? 'grey lighten-1 text--primary': 'grey lighten-2 text--primary'}`"
+                                 :class="`${hover ? 'grey lighten-1 text--primary': 'grey lighten-2  text--primary'}`"
                          >
-                             {{course.courseName}}
+                             {{course.quizName ? course.quizName : lastQuizName}}
                          </v-card-text>
 
                      </v-hover>
@@ -45,7 +47,10 @@
         data: () => ({
             clientCourses: {
                 courseName: null,
+                quizName: null
             },
+            lastQuizName: "",
+
         }),
         methods:{
             goToCourse(key){
@@ -59,6 +64,8 @@
                 .then(result => {
                 self.clientCourses = result
                 })
+            this.lastQuizName =  JSON.parse(localStorage.getItem('lastQuizName'));
+            localStorage.setItem('lastQuizName', JSON.stringify(null));
         }
 
 

@@ -1,6 +1,6 @@
 <template>
   <div class="about">
-    <h1>{{chapter.chapterName}}</h1>
+<!--    <h1>{{chapter.chapterName}}</h1>-->
     <Question></Question>
   </div>
 </template>
@@ -17,14 +17,14 @@
         chapterName: ""
       },
     }),
-    created() {
-      const self = this;
-      const path = RtdbFirebase.pathFactory(4, self)
-      this.chapter = RtdbFirebase.getData(path)
-              .then(result => {
-                self.chapter = result
-              })
-    }
+    // created() {
+    //   const self = this;
+    //   const path = RtdbFirebase.pathFactory(4, self)
+    //   this.chapter = RtdbFirebase.getData(path)
+    //           .then(result => {
+    //             self.chapter = result
+    //           })
+    // }
 
 
   }

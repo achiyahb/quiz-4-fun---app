@@ -5,9 +5,9 @@
             color="cyan"
             dark
     >
-      <v-toolbar-title>{{course.courseName}}</v-toolbar-title>
+      <v-toolbar-title>{{quizDetails.quizName ? quizDetails.quizName : 'quiz 4 fun'}}</v-toolbar-title>
 <v-spacer></v-spacer>
-      <logout></logout>
+      <logout v-if="userId"></logout>
 
     </v-app-bar>
 
@@ -60,25 +60,21 @@
     },
     data: () => ({
       drawer: null,
-      course: {
-        courseName: ""
-      }
+      quizDetails: {
+        quizName: ""
+      },
+      userId: ""
     }),
 
     created() {
       this.$vuetify.rtl = true
-      // const self = this;
-      // const autherIdPath = RtdbFirebase.getAutherIdPath(self)
-      // let quiz = RtdbFirebase.getData(autherIdPath)
-      //         .then(result => {
-      //           quiz = result
-      //           const authorId= quiz['authorId']
-      //           const path = RtdbFirebase.pathFactory(2, self, authorId)
-      //           this.course = RtdbFirebase.getData(path)
-      //                   .then(result => {
-      //                     self.course = result
-      //                   })
-      //         })
+        this.userId =  JSON.parse(localStorage.getItem('UserId'));
+        // const self =this
+        // const path = RtdbFirebase.pathForQuiz(self,3)
+        // this.quizDetails = RtdbFirebase.getData(path)
+        //     .then(result => {
+        //         self.quizDetails = result
+        //     })
 
     }
   }

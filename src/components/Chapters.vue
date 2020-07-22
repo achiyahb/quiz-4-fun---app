@@ -7,8 +7,8 @@
                     color="grey lighten-2"
             >
                 <a style="cursor: pointer">
-                <v-responsive @click="randomArray(key)"
-                        class="text-center try grey lighten-2 rounded-circle d-inline-flex align-center justify-center"
+                <v-responsive @click="prepareForChapter(key)"
+                        class="text-center try grey lighten-2 text--primary rounded-circle d-inline-flex align-center justify-center"
                         height="90"
                         width="90"
                 >
@@ -33,10 +33,10 @@
       chapters: {
         chapterName: ""
       },
-
+        authorId: "",
     }),
       methods: {
-          randomArray(chaid) {
+          prepareForChapter(chaid) {
               // random the chapter's answers
               const randomArray = []
               const array = this.chapters[chaid][`questions`]
@@ -49,10 +49,19 @@
               StorageDriver.updateAllStorageTable('randomKeys', randomArray)
 
               //create an index of attempts
+              const self=this;
+              const path = firebaseApi.pathFactory(5, self, this.authorId,undefined,undefined,chaid)
+              let questions = RtdbFirebase.getData(path)
+                  .then(result => {
+                      questions = result
+                      console.log(questions)
+                      localStorage.setItem('chapterQuestions', JSON.stringify(questions));
+                      // navigation to the first question
+                      this.$router.push({path: `/courses/${this.$route.params.cid}/chapters/${chaid}/questions/${randomArray[0]}`})
+
+                  })
 
 
-              // navigation to the first question
-              this.$router.push({path: `/courses/${this.$route.params.cid}/chapters/${chaid}/questions/${randomArray[0]}`})
           }
       },
         created() {
@@ -61,8 +70,8 @@
            let quiz = RtdbFirebase.getData(autherIdPath)
                 .then(result => {
                     quiz = result
-                    const authorId= quiz['authorId']
-                    const path = RtdbFirebase.pathFactory(3, self, authorId)
+                    self.authorId= quiz['authorId']
+                    const path = RtdbFirebase.pathFactory(3, self, self.authorId)
                     this.chapters = RtdbFirebase.getData(path)
                         .then(result => {
                             self.chapters = result

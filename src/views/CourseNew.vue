@@ -1,8 +1,14 @@
 <template>
     <div class="about">
-        <h2>ברוכים הבאים</h2>
-        <h2>הגעתם ל- quizz for fun!!</h2>
-        <login/>
+        <h2 v-if="!thereUser">ברוכים הבאים</h2>
+        <h2 v-if="!thereUser">הגעתם ל- quiz 4 fun!!</h2>
+        <h3 v-if="!thereUser"> זהו דף ההרשמה ל- "{{quizDetails.quizName}}"</h3>
+          <br>
+        <h4 v-if="!thereUser">כדי שתוכלו להרשם לחידון, ראשית עליכם להרשם לאפליקציה</h4>
+        <h2 v-if="thereUser">נהדר, אתם רשומים לאפליקציה</h2>
+        <h2 v-if="thereUser" > quiz 4 fun!!</h2>
+        <h4 v-if="thereUser">כעת על מנת להרשם לחידון: "{{quizDetails.quizName}}" לחצו על הכפתור, הרשם לחידון</h4>
+        <h4 v-if="thereUser">אם נרשמתם כבר לחידון המבוקש תוכלו לעבור מיד לאזור האישי שלכם</h4>
         <v-container>
             <v-row
                     justify="center"
@@ -17,39 +23,13 @@
                     <a style="...">
                         <v-card>
                             <v-hover>
-
                                 <v-card-text
-                                        class="grey lighten-2 cardBtn"
-                                        @click="check()"
+                                        v-if="!thereUser"
+                                        @click="goToLoginPage"
                                         slot-scope="{hover}"
                                         :class="`${hover ? 'grey lighten-1 text--primary': 'grey lighten-3 text--primary'}`"
                                 >
-                                    {{thereUser?'התחברת בהצלחה':'בדוק חיבור'}}
-                                </v-card-text>
-
-                            </v-hover>
-                        </v-card>
-                    </a>
-                </v-col>
-
-                <v-col
-                        cols="11"
-                        mg="8"
-                        xl="8"
-                        xs="11"
-                        sm="11"
-                >
-                    <a style="...">
-                        <v-card>
-                            <v-hover>
-                                <v-card-text
-                                        @click="createClient"
-                                        v-if="thereUser || access"
-                                        slot-scope="{hover}"
-                                        :class="`${hover ? 'grey lighten-1 text--primary': 'grey lighten-3 text--primary'}`"
-                                >
-                                    {{goTo?'נהדר, נרשמת לחידון, המערכת טוענת נתונים ובעוד מספר שניות תוכל לגשת אליו דרך
-                                    האזור האישי שלך!!':'הרשם לחידון'}}
+                                הכנס לכאן כדי להתחבר לאפליקציה
                                 </v-card-text>
                             </v-hover>
                         </v-card>
@@ -65,10 +45,32 @@
                     <a style="...">
                         <v-card>
                             <v-hover>
-
                                 <v-card-text
-                                        @click="goToClient()"
                                         v-if="thereUser"
+                                        @click="createClient"
+                                        slot-scope="{hover}"
+                                        :class="`${hover ? 'grey lighten-1 text--primary': 'grey lighten-3 text--primary'}`"
+                                >
+                                    {{goTo? `נרשמת לחידון "${quizDetails.quizName}" בהצלחה, מייד תועבר לאזור האישי שלך`:`הרשם לחידון`}}
+                                </v-card-text>
+                            </v-hover>
+                        </v-card>
+                    </a>
+                </v-col>
+                <v-col
+                        cols="11"
+                        mg="8"
+                        xl="8"
+                        xs="11"
+                        sm="11"
+                >
+                    <a style="...">
+                        <v-card>
+                            <v-hover>
+
+                                <v-card-text
+                                        v-if="thereUser &&  !goTo"
+                                        @click="goToClient()"
                                         slot-scope="{hover}"
                                         :class="`${hover ? 'grey lighten-1 text--primary': 'grey lighten-3 text--primary'}`"
                                 >
@@ -94,8 +96,8 @@
     export default {
         components: {Login, OnlineCheck},
         data: () => ({
-            course: {
-                courseName: ""
+            quizDetails: {
+                quizName: ""
             },
             thereUser: false,
             client: "",
@@ -105,37 +107,30 @@
         methods: {
             createClient() {
                 const self = this
-                this.client = firebaseInstance.firebase.auth().currentUser;
-                if (!this.client) {
-                    alert("you need to login first")
-                    return
-                }
                 authentication.createClient(self, this.client.uid)
+                localStorage.setItem('lastQuizName', JSON.stringify(this.quizDetails.quizName));
                 this.goTo = true
-            },
-            getAccess() {
-                this.access = true
-                this.client = firebaseInstance.firebase.auth().currentUser;
-                if (this.client) {
-                    this.thereUser = true
-                }
+                setTimeout( () => this.$router.push({ path: `/`}), 3000);
             },
             goToClient() {
                 this.$router.push({path: `/`})
             },
-            check() {
-                this.client = firebaseInstance.firebase.auth().currentUser;
-                if (this.client) {
-                    this.thereUser = true
-                }
+            goToLoginPage() {
+              this.$router.push('/login')
             }
         },
         created() {
-            this.client = firebaseInstance.firebase.auth().currentUser;
+            this.client = JSON.parse(localStorage.getItem('UserId'));
             if (this.client) {
                 this.thereUser = true
             }
             this.goTo = false
+            const self =this
+            const path = RtdbFirebase.pathForQuiz(self,3)
+            this.quizDetails = RtdbFirebase.getData(path)
+                .then(result => {
+                    self.quizDetails = result
+                })
         },
 
 

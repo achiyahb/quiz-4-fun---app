@@ -13,7 +13,7 @@ const routes = [
 
   {path: '/courses/:cid', name: 'course',meta:{authNotRequired:false}, component: () => import('../views/course.vue')},
 
-  {path: '/courseNew/:cid', name: 'courseNew',meta:{authNotRequired:false}, component: () => import('../views/CourseNew.vue')},
+  {path: '/courseNew/:cid', name: 'courseNew',meta:{authNotRequired:true}, component: () => import('../views/CourseNew.vue')},
 
   {path: '/courses/:cid/chapters/:chaid/questions/:qid', name: 'About',meta: {authNotRequired: false}, component: () => import('../views/Chapter.vue')},
 
@@ -34,9 +34,9 @@ const router = new VueRouter({
 // });
 // eslint-disable-next-line consistent-return
 router.beforeEach((to, from, next) => {
-  const user = JSON.parse(localStorage.getItem('user'));
-  if (user && to.meta.authNotRequired || !user && !to.meta.authNotRequired) {
-    const path = !user ? '/login' : '/home';
+  const user =  JSON.parse(localStorage.getItem('UserId'));
+  if (!user && !to.meta.authNotRequired) {
+    const path = '/login';
     return next(path)
   }
   next()
