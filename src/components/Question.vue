@@ -64,7 +64,7 @@
             authorId: ""
         }),
         methods: {
-            checkTheAnswer(answer){
+            async checkTheAnswer(answer){
                 //define user's answer values
                 let userAnswer = {
                     userChoice: answer,
@@ -84,23 +84,20 @@
                 const path = firebaseApi.pathFactory(9, self, this.authorId,'itGameMode')
                 console.log(userAnswer)
                 console.log(path)
-                firebaseApi.updateData(userAnswer, path)
-                StorageDriver.insertToStorage('userAnswers',userAnswer)
+                await firebaseApi.updateData(userAnswer, path)
+
                 // move to the next page
                 if(!this.randomKeys[0]){
-
-
-                    this.$router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/score`})
+                    await this.$router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/score`})
                 } else {
-                   this.$router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/questions/${this.randomKeys[0]}`})
-                    location.reload()
+                  await this.$router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/questions/${this.randomKeys[0]}`})
+                    await location.reload()
                 }
             },
                 deleteData() {
-                    StorageDriver.updateAllStorageTable('userAnswers',null)
-                    // const self=this
-                    // const path = firebaseApi.pathFactory(7, self, this.authorId,'gameMode')
-                    // RtdbFirebase.deleteData(path)
+                    const self=this
+                    const path = firebaseApi.pathFactory(7, self, this.authorId,'gameMode')
+                    RtdbFirebase.deleteData(path)
                 }
         },
         created() {

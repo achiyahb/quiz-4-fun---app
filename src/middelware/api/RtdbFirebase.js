@@ -26,8 +26,8 @@ function getData(path) {
         })
 }
 
-function updateData(data, path){
-   db.ref(path).set(data)
+async function updateData(data, path){
+ await  db.ref(path).set(data)
 }
 
 function writeData(data, path) {
