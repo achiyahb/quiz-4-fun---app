@@ -85,7 +85,7 @@
                 console.log(userAnswer)
                 console.log(path)
                 firebaseApi.updateData(userAnswer, path)
-
+                StorageDriver.insertToStorage('userAnswers',userAnswer)
                 // move to the next page
                 if(!this.randomKeys[0]){
 
@@ -97,9 +97,10 @@
                 }
             },
                 deleteData() {
-                    const self=this
-                    const path = firebaseApi.pathFactory(7, self, this.authorId,'gameMode')
-                    RtdbFirebase.deleteData(path)
+                    StorageDriver.updateAllStorageTable('userAnswers',null)
+                    // const self=this
+                    // const path = firebaseApi.pathFactory(7, self, this.authorId,'gameMode')
+                    // RtdbFirebase.deleteData(path)
                 }
         },
         created() {

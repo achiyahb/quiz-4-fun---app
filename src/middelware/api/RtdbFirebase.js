@@ -80,7 +80,7 @@ function pathForClient(self,i, clid){
 }
 
 function getAutherIdPath(self) {
-    const pathArray = ["quizzes",self.$route.params.cid]
+    const pathArray = ["quizzes",self.$route.params.cid,"quizDetails"]
     return pathArray.join('/')
 }
 
