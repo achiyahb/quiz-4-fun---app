@@ -1,19 +1,34 @@
 <template>
     <div>
-<v-row>
-    <v-spacer></v-spacer>
-    <a style="cursor: pointer">
-    <router-link :to="`/courses/${$route.params.cid}`">
-        <v-icon @click="deleteData()" class="fas fa-times ml-8 mt-2"></v-icon>
-    </router-link>
-    </a>
 
-</v-row>
             <v-container>
-        <v-row justify="center" align="start">
+                <v-row justify="center" align="start">
+                      <v-col
+                              cols="12"
+                      >
+                          <v-row>
+
+                          <a style="cursor: pointer">
+                        <v-responsive
+                                class="text-center try light-blue darken-3 white--text mr-4 rounded
+                       d-inline-flex align-center "
+                                height="45"
+                                width="45"
+                        >
+                            {{numQuestion}} / {{thisNum}}
+                        </v-responsive>
+                    </a>
+                    <v-spacer></v-spacer>
+                    <a style="cursor: pointer">
+                        <router-link :to="`/courses/${$route.params.cid}`">
+                            <v-icon @click="deleteData()" class="fas fa-times ml-4 mt-2"></v-icon>
+                        </router-link>
+                    </a>
+                </v-row>
+                </v-col>
+
             <v-col
                     cols="12"
-                    md="12"
             >
             <div
                     class="pa-5 text-center rounded-lg light-blue darken-3 white--text"
@@ -26,14 +41,16 @@
                     v-for="answer of answerArr"
                     :key="answer"
                     cols="12"
-                    md="12"
-                    xs="11"
-                    sm="5"
+                    md="6"
+                    xs="12"
+                    sm="12"
+                    xl="6"
+                    lg="6"
             >
                 <a style="cursor: pointer">
                     <div
-                            :class="'rounded-lg'"
-                            class="pa-3 text-center blue lighten-2 black--text"
+                            v-if=""
+                            :class="(answer===answers.correctAnswer && answered)?'pa-3 rounded-lg text-center green lighten-2 black--text' :(answer===userAnswer && answered)?'pa-3 rounded-lg text-center red lighten-2 black--text':'pa-3 rounded-lg text-center blue lighten-2 black--text'"
                             v-text="`${answer}`"
                             @click="checkTheAnswer(answer)"
                     ></div>
@@ -61,11 +78,16 @@
             question: "",
             randomKeys: [],
             deleteTheFirst: [],
-            authorId: ""
+            authorId: "",
+            answered: false,
+            userAnswer: "",
+            thisNum: undefined,
+            numQuestion: undefined
         }),
         methods: {
-            async checkTheAnswer(answer){
+            checkTheAnswer(answer){
                 //define user's answer values
+                this.answered =true
                 let userAnswer = {
                     userChoice: answer,
                     question: this.question,
@@ -77,27 +99,31 @@
                 } else {
                     console.log('wrong answer');
                     userAnswer.itIsCorrect = false;
+                    this.userAnswer = answer
                 }
 
                 // push user's answer values to data base
-                const self = this
-                const path = firebaseApi.pathFactory(9, self, this.authorId,'itGameMode')
-                console.log(userAnswer)
-                console.log(path)
-                await firebaseApi.updateData(userAnswer, path)
-
+                // const self = this
+                // const path = firebaseApi.pathFactory(9, self, this.authorId,'itGameMode')
+                // console.log(userAnswer)
+                // console.log(path)
+                // firebaseApi.updateData(userAnswer, path)
+                StorageDriver.insertToStorage('userAnswers',userAnswer)
                 // move to the next page
                 if(!this.randomKeys[0]){
-                    await this.$router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/score`})
+
+
+                    setTimeout(()=>this.$router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/score`}),1000)
                 } else {
-                  await this.$router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/questions/${this.randomKeys[0]}`})
-                    await location.reload()
+                   this.$router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/questions/${this.randomKeys[0]}`})
+                    location.reload()
                 }
             },
                 deleteData() {
-                    const self=this
-                    const path = firebaseApi.pathFactory(7, self, this.authorId,'gameMode')
-                    RtdbFirebase.deleteData(path)
+                 StorageDriver.updateAllStorageTable('userAnswers',null)
+                    // const self=this
+                    // const path = firebaseApi.pathFactory(7, self, this.authorId,'gameMode')
+                    // RtdbFirebase.deleteData(path)
                 }
         },
         created() {
@@ -110,7 +136,7 @@
                 self.answerArr.push(this.answers[prop]);
             }
             util.shuffle(self.answerArr)
-
+           this.numQuestion = Object.size(chapterQuestions)
             const autherIdPath = RtdbFirebase.getAutherIdPath(self)
             let quiz = RtdbFirebase.getData(autherIdPath)
                 .then(result => {
@@ -131,6 +157,8 @@
             //     })
             this.deleteTheFirst = StorageDriver.getFromStorage('randomKeys')
             this.deleteTheFirst.shift();
+            this.thisNum = this.numQuestion - this.deleteTheFirst.length
+
             this.randomKeys = this.deleteTheFirst;
             StorageDriver.updateAllStorageTable('randomKeys', this.randomKeys)
         }

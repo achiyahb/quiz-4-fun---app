@@ -27,7 +27,7 @@
                     // The signed-in user info.
                     var user = result.user;
                     // ...
-                    localStorage.setItem('UserId', JSON.stringify(user.uid));
+                    localStorage.setItem('UserId',JSON.stringify(user.uid));
                     router.go(-1)
                 }).catch(function(error) {
                     // Handle Errors here.

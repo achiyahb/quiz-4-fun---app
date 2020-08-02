@@ -26,8 +26,8 @@ function getData(path) {
         })
 }
 
-async function updateData(data, path){
- await  db.ref(path).set(data)
+function updateData(data, path){
+   db.ref(path).set(data)
 }
 
 function writeData(data, path) {
@@ -72,7 +72,13 @@ function pathForAtt(self) {
 function pathForClient(self,i, clid){
     if (!clid){
         const client = firebaseInstance.firebase.auth().currentUser;
-        clid =client.uid
+        if (client){
+            clid =client.uid
+        } else {
+            clid = JSON.parse(localStorage.getItem('UserId'))
+        }
+
+
     }
     const fullPath = ["clients",clid,"quizzes",self.$route.params.cid]
     const pathArray = fullPath.splice(0,i)

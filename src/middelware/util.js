@@ -1,5 +1,5 @@
 export default {
-    shuffle
+    shuffle,
 }
 
 function shuffle(array) {

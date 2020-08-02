@@ -3,7 +3,7 @@
         <v-row class="text-center" align="start">
             <v-container
                     v-for="(chapter,key) of chapters" class="text-center"
-                    :class="`justify-'space-around' mb-6`"
+                    :class="`justify-center space-around mb-6`"
                     color="grey lighten-2"
             >
                 <a style="cursor: pointer">
@@ -16,6 +16,7 @@
                 </v-responsive>
                 </a>
             </v-container>
+
         </v-row>
     </v-container>
 </template>
@@ -48,6 +49,7 @@
               // set random answers to local storage
               StorageDriver.updateAllStorageTable('randomKeys', randomArray)
 
+              StorageDriver.updateAllStorageTable('userAnswers',null)
               //create an index of attempts
               const self=this;
               const path = firebaseApi.pathFactory(5, self, this.authorId,undefined,undefined,chaid)
