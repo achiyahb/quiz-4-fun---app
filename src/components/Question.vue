@@ -74,6 +74,7 @@
             answers: {
                 correctAnswer: "",
             },
+            chapterQuestions: {},
             answerArr: [],
             question: "",
             randomKeys: [],
@@ -81,26 +82,28 @@
             authorId: "",
             answered: false,
             userAnswer: "",
-            thisNum: undefined,
+            thisNum: 1,
             numQuestion: undefined
         }),
         methods: {
             checkTheAnswer(answer){
                 //define user's answer values
-                this.answered =true
+              if(this.answered){
+                return
+              }
+              this.answered =true
                 let userAnswer = {
                     userChoice: answer,
                     question: this.question,
                     correctAnswer: this.answers.correctAnswer
                 }
                 if(answer === this.answers.correctAnswer){
-                    console.log('right answer');
                     userAnswer.itIsCorrect = true;
                 } else {
-                    console.log('wrong answer');
                     userAnswer.itIsCorrect = false;
                     this.userAnswer = answer
                 }
+
 
                 // push user's answer values to data base
                 // const self = this
@@ -110,13 +113,10 @@
                 // firebaseApi.updateData(userAnswer, path)
                 StorageDriver.insertToStorage('userAnswers',userAnswer)
                 // move to the next page
-                if(!this.randomKeys[0]){
-
-
-                    setTimeout(()=>this.$router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/score`}),1000)
+                if(this.thisNum === this.randomKeys.length){
+                    setTimeout(()=>this.$router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/score`}),2000)
                 } else {
-                   this.$router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/questions/${this.randomKeys[0]}`})
-                    location.reload()
+                  setTimeout(()=>this.$router.push({ path: `/courses/${this.$route.params.cid}/chapters/${this.$route.params.chaid}/questions/${this.randomKeys[this.thisNum]}`}),2000)
                 }
             },
                 deleteData() {
@@ -124,25 +124,37 @@
                     // const self=this
                     // const path = firebaseApi.pathFactory(7, self, this.authorId,'gameMode')
                     // RtdbFirebase.deleteData(path)
-                }
-        },
-        created() {
-            const self = this;
-            const chapterQuestions =  JSON.parse(localStorage.getItem('chapterQuestions'));
-            this.answers = chapterQuestions[this.$route.params.qid]
+                },
+          getAndOrderTheQuestion(){
+            this.answered= false
+            this.answerArr= []
+            this.answers = this.chapterQuestions[this.$route.params.qid]
             this.question = this.answers.question
             delete this.answers.question
             for (let prop in this.answers) {
-                self.answerArr.push(this.answers[prop]);
+              this.answerArr.push(this.answers[prop]);
             }
-            util.shuffle(self.answerArr)
-           this.numQuestion = Object.size(chapterQuestions)
-            const autherIdPath = RtdbFirebase.getAutherIdPath(self)
-            let quiz = RtdbFirebase.getData(autherIdPath)
+            util.shuffle(this.answerArr)
+            this.numQuestion = Object.size(this.chapterQuestions)
+          },
+        },
+      watch: {
+        '$route'() {
+          this.getAndOrderTheQuestion()
+          this.thisNum ++
+        }
+      },
+        created() {
+          const self = this;
+          this.chapterQuestions =  JSON.parse(localStorage.getItem('chapterQuestions'));
+          this.getAndOrderTheQuestion()
+            const authorIdPath = RtdbFirebase.getAutherIdPath(self)
+            let quiz = RtdbFirebase.getData(authorIdPath)
                 .then(result => {
                     quiz = result
                     self.authorId = quiz['authorId']
                 })
+          this.randomKeys = StorageDriver.getFromStorage('randomKeys')
             //         const path = firebaseApi.pathFactory(6, self, self.authorId)
             //         this.answers = firebaseApi.getData(path)
             //             .then(result => {
@@ -155,12 +167,6 @@
             //                 util.shuffle(self.answerArr)
             //             })
             //     })
-            this.deleteTheFirst = StorageDriver.getFromStorage('randomKeys')
-            this.deleteTheFirst.shift();
-            this.thisNum = this.numQuestion - this.deleteTheFirst.length
-
-            this.randomKeys = this.deleteTheFirst;
-            StorageDriver.updateAllStorageTable('randomKeys', this.randomKeys)
         }
     }
 
